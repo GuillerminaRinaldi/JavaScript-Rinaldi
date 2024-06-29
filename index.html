@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Videos de Música</title>
+
+    <script defer src="js/main.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Videos de Música</h1>
+        <input type="text" id="search" placeholder="Buscar música...">
+        <button onclick="searchVideos()">Buscar</button>
+        <select id="sortBy">
+            <option value="relevance">Relevancia</option>
+            <option value="date">Fecha</option>
+            <option value="title">Título</option>
+        </select>
+        <div id="videos"></div>
+    </div>
+    
+</body>
+</html>

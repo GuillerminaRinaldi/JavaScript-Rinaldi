@@ -16,10 +16,10 @@ const videos = [
         title: 'Sorry de Justin Bieber',
         date: '2021-11-20',
         url: 'https://www.youtube.com/watch?v=fRh_vgS2dFE'
-    }
+    },
     {
         id: '4',
-        title: 'Sweet Child'o Mine de Gun's and Roses',
+        title: 'Sweet Child o Mine de Guns and Roses',
         date: '2021-11-20',
         url: 'https://www.youtube.com/watch?v=1w7OgIMMRc4'
     }

@@ -2,26 +2,26 @@ const videos = [
     {
         id: '1',
         title: 'Bzrp Music Sessions, Vol 53 con Shakira',
-        date: '2023-01-01',
+        date: '2023-11-01',
         url: 'https://www.youtube.com/embed/CocEMWdc7Ck'
 
     },
     {
         id: '2',
         title: 'De Musica Ligera de Soda Stereo',
-        date: '2022-05-15',
+        date: '1990-10-15',
         url: 'https://www.youtube.com/embed/T_FkEw27XJ0'
     },
     {
         id: '3',
         title: 'Sorry de Justin Bieber',
-        date: '2021-11-20',
+        date: '2015-10-22',
         url: 'https://www.youtube.com/embed/fRh_vgS2dFE'
     },
     {
         id: '4',
         title: 'Sweet Child o Mine de Guns and Roses',
-        date: '2021-11-20',
+        date: '1988-08-17',
         url: 'https://www.youtube.com/embed/1w7OgIMMRc4'
     }
 ];

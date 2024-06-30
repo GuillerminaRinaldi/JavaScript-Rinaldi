@@ -27,9 +27,17 @@ const videos = [
 ];
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    searchVideos();
+});
+
 function searchVideos() {
     const query = document.getElementById('search').value.toLowerCase();
     const sortBy = document.getElementById('sortBy').value;
+
+    localStorage.setItem('searchQuery', query);
+    localStorage.setItem('sortBy', sortBy);
 
     let filteredVideos = videos.filter(video => 
         video.title.toLowerCase().includes(query)
@@ -57,4 +65,28 @@ function displayVideos(videos) {
         `;
         videosContainer.appendChild(videoElement);
     });
+}
+
+function clearSearch() {
+    document.getElementById('search').value = '';
+    localStorage.removeItem('searchQuery');
+    searchVideos();
+}
+
+function clearSort() {
+    document.getElementById('sortBy').value = 'relevance';
+    localStorage.removeItem('sortBy');
+    searchVideos();
+}
+
+function loadState() {
+    const searchQuery = localStorage.getItem('searchQuery');
+    const sortBy = localStorage.getItem('sortBy');
+
+    if (searchQuery) {
+        document.getElementById('search').value = searchQuery;
+    }
+    if (sortBy) {
+        document.getElementById('sortBy').value = sortBy;
+    }
 }

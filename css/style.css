@@ -37,3 +37,17 @@ button {
 .video, .saved-song {
     margin: 10px 0;
 }
+
+.delete-button {
+    margin-top: 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button:hover {
+    background-color: #ff1a1a;
+}

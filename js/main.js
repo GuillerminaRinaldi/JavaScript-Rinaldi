@@ -119,6 +119,7 @@ function loadSavedSongs() {
         songElement.innerHTML = `
             <iframe width="560" height="315" src="${song.url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <p>${song.title}</p>
+            <button class="delete-button" onclick="deleteSong('${song.id}')">Eliminar</button>
         `;
         savedSongsContainer.appendChild(songElement);
     });
@@ -145,4 +146,11 @@ function addVideo() {
     saveSong(videoId); // Guardar el nuevo video directamente
     document.getElementById('newVideoUrl').value = ''; // Limpiar el campo de entrada
     document.getElementById('newVideoTitle').value = ''; // Limpiar el campo de entrada
+}
+
+function deleteSong(videoId) {
+    let savedSongs = JSON.parse(localStorage.getItem('savedSongs')) || [];
+    savedSongs = savedSongs.filter(song => song.id !== videoId);
+    localStorage.setItem('savedSongs', JSON.stringify(savedSongs));
+    loadSavedSongs();
 }

@@ -25,7 +25,6 @@ const videos = [
         url: 'https://www.youtube.com/embed/1w7OgIMMRc4'
     }
 ];
-
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
     searchVideos();
@@ -42,6 +41,12 @@ function searchVideos() {
     let filteredVideos = videos.filter(video => 
         video.title.toLowerCase().includes(query)
     );
+
+    if (filteredVideos.length === 0) {
+        // Redirigir a YouTube si no se encuentra la canción en la lista
+        window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+        return;
+    }
 
     if (sortBy === 'date') {
         filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -117,4 +122,23 @@ function loadSavedSongs() {
         `;
         savedSongsContainer.appendChild(songElement);
     });
+}
+
+function addVideo() {
+    const url = document.getElementById('newVideoUrl').value;
+    const videoId = url.split('v=')[1];
+    if (!videoId) {
+        alert('URL inválida');
+        return;
+    }
+    const newVideo = {
+        id: videoId,
+        title: `Nuevo Video ${new Date().toLocaleString()}`, // Título genérico para el nuevo video
+        date: new Date().toISOString().split('T')[0],
+        url: `https://www.youtube.com/embed/${videoId}`
+    };
+
+    videos.push(newVideo);
+    saveSong(videoId); // Guardar el nuevo video directamente
+    document.getElementById('newVideoUrl').value = ''; // Limpiar el campo de entrada
 }

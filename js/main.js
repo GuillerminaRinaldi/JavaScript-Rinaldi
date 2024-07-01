@@ -26,10 +26,10 @@ const videos = [
     }
 ];
 
-
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
     searchVideos();
+    loadSavedSongs();
 });
 
 function searchVideos() {
@@ -62,6 +62,7 @@ function displayVideos(videos) {
         videoElement.innerHTML = `
             <iframe width="560" height="315" src="${video.url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <p>${video.title}</p>
+            <button onclick="saveSong('${video.id}')">Guardar Canción</button>
         `;
         videosContainer.appendChild(videoElement);
     });
@@ -89,4 +90,31 @@ function loadState() {
     if (sortBy) {
         document.getElementById('sortBy').value = sortBy;
     }
+}
+
+function saveSong(videoId) {
+    let savedSongs = JSON.parse(localStorage.getItem('savedSongs')) || [];
+    const song = videos.find(video => video.id === videoId);
+    
+    if (song && !savedSongs.some(savedSong => savedSong.id === videoId)) {
+        savedSongs.push(song);
+        localStorage.setItem('savedSongs', JSON.stringify(savedSongs));
+        loadSavedSongs();
+    }
+}
+
+function loadSavedSongs() {
+    const savedSongs = JSON.parse(localStorage.getItem('savedSongs')) || [];
+    const savedSongsContainer = document.getElementById('savedSongs');
+    savedSongsContainer.innerHTML = '';
+
+    savedSongs.forEach(song => {
+        const songElement = document.createElement('div');
+        songElement.className = 'saved-song';
+        songElement.innerHTML = `
+            <iframe width="560" height="315" src="${song.url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>${song.title}</p>
+        `;
+        savedSongsContainer.appendChild(songElement);
+    });
 }

@@ -126,14 +126,17 @@ function loadSavedSongs() {
 
 function addVideo() {
     const url = document.getElementById('newVideoUrl').value;
+    const title = document.getElementById('newVideoTitle').value;
     const videoId = url.split('v=')[1];
-    if (!videoId) {
-        alert('URL inválida');
+
+    if (!videoId || !title) {
+        alert('URL o título inválido');
         return;
     }
+
     const newVideo = {
         id: videoId,
-        title: `Nuevo Video ${new Date().toLocaleString()}`, // Título genérico para el nuevo video
+        title: title,
         date: new Date().toISOString().split('T')[0],
         url: `https://www.youtube.com/embed/${videoId}`
     };
@@ -141,4 +144,5 @@ function addVideo() {
     videos.push(newVideo);
     saveSong(videoId); // Guardar el nuevo video directamente
     document.getElementById('newVideoUrl').value = ''; // Limpiar el campo de entrada
+    document.getElementById('newVideoTitle').value = ''; // Limpiar el campo de entrada
 }

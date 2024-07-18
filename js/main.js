@@ -43,7 +43,6 @@ function searchVideos() {
     );
 
     if (filteredVideos.length === 0) {
-        // Redirigir a YouTube si no se encuentra la canción en la lista
         window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
         return;
     }
@@ -143,9 +142,9 @@ function addVideo() {
     };
 
     videos.push(newVideo);
-    saveSong(videoId); // Guardar el nuevo video directamente
-    document.getElementById('newVideoUrl').value = ''; // Limpiar el campo de entrada
-    document.getElementById('newVideoTitle').value = ''; // Limpiar el campo de entrada
+    saveSong(videoId); 
+    document.getElementById('newVideoUrl').value = '';
+    document.getElementById('newVideoTitle').value = ''; 
 }
 
 function deleteSong(videoId) {

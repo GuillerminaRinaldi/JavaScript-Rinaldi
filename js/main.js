@@ -1,59 +1,14 @@
-const videos = [
-    {
-        id: '1',
-        title: 'Bzrp Music Sessions, Vol 53 con Shakira',
-        date: '2023-11-01',
-        url: 'https://www.youtube.com/embed/CocEMWdc7Ck'
-
-    },
-    {
-        id: '2',
-        title: 'De Musica Ligera de Soda Stereo',
-        date: '1990-10-15',
-        url: 'https://www.youtube.com/embed/T_FkEw27XJ0'
-    },
-    {
-        id: '3',
-        title: 'Sorry de Justin Bieber',
-        date: '2015-10-22',
-        url: 'https://www.youtube.com/embed/fRh_vgS2dFE'
-    },
-    {
-        id: '4',
-        title: 'Sweet Child o Mine de Guns and Roses',
-        date: '1988-08-17',
-        url: 'https://www.youtube.com/embed/1w7OgIMMRc4'
+async function fetchVideos() {
+    try {
+        const response = await fetch('data/videos.json');
+        if (!response.ok) {
+            throw new Error('Error al cargar los videos');
+        }
+        const videos = await response.json();
+        displayVideos(videos);
+    } catch (error) {
+        showError(error.message);
     }
-];
-document.addEventListener('DOMContentLoaded', () => {
-    loadState();
-    searchVideos();
-    loadSavedSongs();
-});
-
-function searchVideos() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const sortBy = document.getElementById('sortBy').value;
-
-    localStorage.setItem('searchQuery', query);
-    localStorage.setItem('sortBy', sortBy);
-
-    let filteredVideos = videos.filter(video => 
-        video.title.toLowerCase().includes(query)
-    );
-
-    if (filteredVideos.length === 0) {
-        window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
-        return;
-    }
-
-    if (sortBy === 'date') {
-        filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (sortBy === 'title') {
-        filteredVideos.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
-    displayVideos(filteredVideos);
 }
 
 function displayVideos(videos) {
@@ -72,6 +27,33 @@ function displayVideos(videos) {
     });
 }
 
+function searchVideos() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const sortBy = document.getElementById('sortBy').value;
+
+    localStorage.setItem('searchQuery', query);
+    localStorage.setItem('sortBy', sortBy);
+
+    fetchVideos().then(videos => {
+        let filteredVideos = videos.filter(video => 
+            video.title.toLowerCase().includes(query)
+        );
+
+        if (filteredVideos.length === 0) {
+            window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+            return;
+        }
+
+        if (sortBy === 'date') {
+            filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (sortBy === 'title') {
+            filteredVideos.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        displayVideos(filteredVideos);
+    });
+}
+
 function clearSearch() {
     document.getElementById('search').value = '';
     localStorage.removeItem('searchQuery');
@@ -82,18 +64,6 @@ function clearSort() {
     document.getElementById('sortBy').value = 'relevance';
     localStorage.removeItem('sortBy');
     searchVideos();
-}
-
-function loadState() {
-    const searchQuery = localStorage.getItem('searchQuery');
-    const sortBy = localStorage.getItem('sortBy');
-
-    if (searchQuery) {
-        document.getElementById('search').value = searchQuery;
-    }
-    if (sortBy) {
-        document.getElementById('sortBy').value = sortBy;
-    }
 }
 
 function saveSong(videoId) {
@@ -130,7 +100,7 @@ function addVideo() {
     const videoId = url.split('v=')[1];
 
     if (!videoId || !title) {
-        alert('URL o título inválido');
+        showError('URL o título inválido');
         return;
     }
 
@@ -152,4 +122,13 @@ function deleteSong(videoId) {
     savedSongs = savedSongs.filter(song => song.id !== videoId);
     localStorage.setItem('savedSongs', JSON.stringify(savedSongs));
     loadSavedSongs();
+}
+
+function showError(message) {
+    Swal.fire({
+        title: 'Error',
+        text: message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+    });
 }

@@ -5,31 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App de Videos de Música</title>
 
+    <script defer src="js/dom.js"></script>
     <script defer src="js/main.js"></script>
 
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
     <div class="container">
         <h1>Videos de Música</h1>
-        <input type="text" id="search" placeholder="Buscar música..." oninput="searchVideos()">
-        <button onclick="clearSearch()">Limpiar Búsqueda</button>
-        <select id="sortBy" onchange="searchVideos()">
+        <input type="text" id="search" placeholder="Buscar música...">
+        <button id="clearSearchBtn">Limpiar Búsqueda</button>
+        <select id="sortBy">
             <option value="relevance">Relevancia</option>
             <option value="date">Fecha</option>
             <option value="title">Título</option>
         </select>
-        <button onclick="clearSort()">Limpiar Orden</button>
-        <p>Podes escuchar nuestros videos sugerencia o buscar tus propias canciones</p>
+        <button id="clearSortBtn">Limpiar Orden</button>
+        <p>Puedes escuchar nuestros videos sugerencia o buscar tus propias canciones</p>
         <div id="videos"></div>
         <h2>Canciones Guardadas</h2>
         <div id="savedSongs"></div>
         <h2>Añadir Video de YouTube</h2>
         <input type="text" id="newVideoUrl" placeholder="URL de YouTube">
         <input type="text" id="newVideoTitle" placeholder="Título del Video">
-        <button onclick="addVideo()">Añadir Video</button>
+        <button id="addVideoBtn">Añadir Video</button>
     </div>
-    
 </body>
 </html>

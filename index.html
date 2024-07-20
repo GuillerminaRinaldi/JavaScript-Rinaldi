@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App de Videos de Música</title>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
     <script defer src="js/dom.js"></script>
     <script defer src="js/main.js"></script>
-
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <h1>Videos de Música</h1>
+        <p>Podes escuchar nuestros videos sugerencia o buscar tus propias canciones</p>
         <input type="text" id="search" placeholder="Buscar música...">
+        <button id="searchBtn">Buscar</button>
         <button id="clearSearchBtn">Limpiar Búsqueda</button>
         <select id="sortBy">
             <option value="relevance">Relevancia</option>
@@ -21,7 +25,7 @@
             <option value="title">Título</option>
         </select>
         <button id="clearSortBtn">Limpiar Orden</button>
-        <p>Puedes escuchar nuestros videos sugerencia o buscar tus propias canciones</p>
+    
         <div id="videos"></div>
         <h2>Canciones Guardadas</h2>
         <div id="savedSongs"></div>

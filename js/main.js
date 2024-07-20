@@ -1,13 +1,41 @@
-async function fetchVideos() {
+const videos = [];
+
+async function searchVideos() {
     try {
+        const query = document.getElementById('search').value.toLowerCase();
+        const sortBy = document.getElementById('sortBy').value;
+
+        localStorage.setItem('searchQuery', query);
+        localStorage.setItem('sortBy', sortBy);
+
         const response = await fetch('data/videos.json');
-        if (!response.ok) {
-            throw new Error('Error al cargar los videos');
-        }
+        if (!response.ok) throw new Error('No se pudo cargar el archivo JSON.');
         const videos = await response.json();
-        displayVideos(videos);
+
+        let filteredVideos = videos.filter(video => 
+            video.title.toLowerCase().includes(query)
+        );
+
+        if (filteredVideos.length === 0) {
+            window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
+            return;
+        }
+
+        if (sortBy === 'date') {
+            filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
+        } else if (sortBy === 'title') {
+            filteredVideos.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        displayVideos(filteredVideos);
     } catch (error) {
-        showError(error.message);
+        console.error('Error al buscar videos:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'No se pudo realizar la búsqueda.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
 }
 
@@ -27,33 +55,6 @@ function displayVideos(videos) {
     });
 }
 
-function searchVideos() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const sortBy = document.getElementById('sortBy').value;
-
-    localStorage.setItem('searchQuery', query);
-    localStorage.setItem('sortBy', sortBy);
-
-    fetchVideos().then(videos => {
-        let filteredVideos = videos.filter(video => 
-            video.title.toLowerCase().includes(query)
-        );
-
-        if (filteredVideos.length === 0) {
-            window.open(`https://www.youtube.com/results?search_query=${query}`, '_blank');
-            return;
-        }
-
-        if (sortBy === 'date') {
-            filteredVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
-        } else if (sortBy === 'title') {
-            filteredVideos.sort((a, b) => a.title.localeCompare(b.title));
-        }
-
-        displayVideos(filteredVideos);
-    });
-}
-
 function clearSearch() {
     document.getElementById('search').value = '';
     localStorage.removeItem('searchQuery');
@@ -66,10 +67,22 @@ function clearSort() {
     searchVideos();
 }
 
+function loadState() {
+    const searchQuery = localStorage.getItem('searchQuery');
+    const sortBy = localStorage.getItem('sortBy');
+
+    if (searchQuery) {
+        document.getElementById('search').value = searchQuery;
+    }
+    if (sortBy) {
+        document.getElementById('sortBy').value = sortBy;
+    }
+}
+
 function saveSong(videoId) {
     let savedSongs = JSON.parse(localStorage.getItem('savedSongs')) || [];
     const song = videos.find(video => video.id === videoId);
-    
+
     if (song && !savedSongs.some(savedSong => savedSong.id === videoId)) {
         savedSongs.push(song);
         localStorage.setItem('savedSongs', JSON.stringify(savedSongs));
@@ -100,7 +113,7 @@ function addVideo() {
     const videoId = url.split('v=')[1];
 
     if (!videoId || !title) {
-        showError('URL o título inválido');
+        alert('URL o título inválido');
         return;
     }
 
@@ -112,9 +125,9 @@ function addVideo() {
     };
 
     videos.push(newVideo);
-    saveSong(videoId); 
+    saveSong(videoId);
     document.getElementById('newVideoUrl').value = '';
-    document.getElementById('newVideoTitle').value = ''; 
+    document.getElementById('newVideoTitle').value = '';
 }
 
 function deleteSong(videoId) {
@@ -122,13 +135,4 @@ function deleteSong(videoId) {
     savedSongs = savedSongs.filter(song => song.id !== videoId);
     localStorage.setItem('savedSongs', JSON.stringify(savedSongs));
     loadSavedSongs();
-}
-
-function showError(message) {
-    Swal.fire({
-        title: 'Error',
-        text: message,
-        icon: 'error',
-        confirmButtonText: 'OK'
-    });
 }

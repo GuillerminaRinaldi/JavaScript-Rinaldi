@@ -1,25 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search');
-    const clearSearchBtn = document.getElementById('clearSearchBtn');
-    const sortBySelect = document.getElementById('sortBy');
-    const clearSortBtn = document.getElementById('clearSortBtn');
-    const addVideoBtn = document.getElementById('addVideoBtn');
+    disableControls();
+    
+    showWelcomeMessage().then(() => {
+        enableControls();
+        loadState();
+        searchVideos();
+        loadSavedSongs();
+    });
 
-    searchInput.addEventListener('input', searchVideos);
-    clearSearchBtn.addEventListener('click', clearSearch);
-    sortBySelect.addEventListener('change', searchVideos);
-    clearSortBtn.addEventListener('click', clearSort);
-    addVideoBtn.addEventListener('click', addVideo);
-
-    showWelcomeMessage();
-    fetchVideos();
+    // Attach event listeners
+    document.getElementById('searchBtn').addEventListener('click', searchVideos);
+    document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
+    document.getElementById('clearSortBtn').addEventListener('click', clearSort);
+    document.getElementById('addVideoBtn').addEventListener('click', addVideo);
 });
 
 function showWelcomeMessage() {
-    Swal.fire({
+    return Swal.fire({
         title: 'Bienvenidos',
         text: '¡Disfruta de nuestra App de Videos de Música!',
         icon: 'info',
         confirmButtonText: 'OK'
     });
+}
+
+function disableControls() {
+    document.getElementById('search').disabled = true;
+    document.getElementById('searchBtn').disabled = true;
+    document.getElementById('clearSearchBtn').disabled = true;
+    document.getElementById('sortBy').disabled = true;
+    document.getElementById('clearSortBtn').disabled = true;
+    document.getElementById('newVideoUrl').disabled = true;
+    document.getElementById('newVideoTitle').disabled = true;
+    document.getElementById('addVideoBtn').disabled = true;
+}
+
+function enableControls() {
+    document.getElementById('search').disabled = false;
+    document.getElementById('searchBtn').disabled = false;
+    document.getElementById('clearSearchBtn').disabled = false;
+    document.getElementById('sortBy').disabled = false;
+    document.getElementById('clearSortBtn').disabled = false;
+    document.getElementById('newVideoUrl').disabled = false;
+    document.getElementById('newVideoTitle').disabled = false;
+    document.getElementById('addVideoBtn').disabled = false;
 }

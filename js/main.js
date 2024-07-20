@@ -1,4 +1,4 @@
-const videos = [];
+let videos = [];
 
 async function searchVideos() {
     try {
@@ -10,7 +10,7 @@ async function searchVideos() {
 
         const response = await fetch('data/videos.json');
         if (!response.ok) throw new Error('No se pudo cargar el archivo JSON.');
-        const videos = await response.json();
+        videos = await response.json();
 
         let filteredVideos = videos.filter(video => 
             video.title.toLowerCase().includes(query)
@@ -113,7 +113,12 @@ function addVideo() {
     const videoId = url.split('v=')[1];
 
     if (!videoId || !title) {
-        alert('URL o título inválido');
+        Swal.fire({
+            title: 'Error',
+            text: 'URL o título inválido.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 

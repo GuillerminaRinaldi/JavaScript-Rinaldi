@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     disableControls();
-    
+
     showWelcomeMessage().then(() => {
         enableControls();
         loadState();
@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadSavedSongs();
     });
 
-    // Attach event listeners
     document.getElementById('searchBtn').addEventListener('click', searchVideos);
     document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
     document.getElementById('clearSortBtn').addEventListener('click', clearSort);
